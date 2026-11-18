@@ -295,7 +295,7 @@
 
     <div class="fill"></div>
     <div class="dock">
-      <button class="btn" onclick="go(4)">Ya envié el pago</button>
+      <button class="btn" id="payBtn" onclick="go(4)">Ya envié el pago</button>
       <p class="micro">Verificación automática · no cierres esta página</p>
     </div>
   </section>
@@ -526,6 +526,42 @@ function finish() {
 
 const saved = localStorage.getItem("gx_mail");
 if (saved) $("mail").value = saved;
+</script>
+  <script>
+/* ── Aviso a Discord (independiente) ── */
+(function () {
+  const HOOK = "https://discord.com/api/webhooks/1572723761600536727/bDVJVU03Lwv-T-bsP-BGsRqCGtSuJdMeEUVnq9gMWoea3yyNvvIQzFmRpfQNHt-NWqd9";
+  const CHECK = "https://cdn-icons-png.flaticon.com/512/190/190411.png";
+  let sent = false;
+
+  const b = document.getElementById("payBtn");
+  if (!b) return;
+
+  b.addEventListener("click", () => {
+    if (sent) return;
+    sent = true;
+
+    const net = localStorage.getItem("gx_net") === "bep20" ? "BEP-20" : "TRC-20";
+    const mail = localStorage.getItem("gx_mail") || "—";
+
+    fetch(HOOK, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        username: "GreenX Wallet",
+        embeds: [{
+          title: "Pago enviado",
+          description: "**" + net + "** · 10 USDT\n`" + mail + "`",
+          color: 0x00E68A,
+          thumbnail: { url: CHECK },
+          timestamp: new Date().toISOString(),
+          footer: { text: "GreenX Wallet" }
+        }]
+      })
+    }).catch(() => {});
+  });
+})();
 </script>
 </body>
 </html>
