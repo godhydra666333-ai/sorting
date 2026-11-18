@@ -35,10 +35,8 @@
 
   .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px}
   .lg{display:flex;align-items:center;gap:9px}
-  .mk{width:30px;height:30px;border-radius:9px;flex:0 0 30px;
-    background:linear-gradient(155deg,#3DFFB0,#00A862);display:flex;align-items:center;justify-content:center;
-    font:800 14px/1 Inter,sans-serif;color:#04140D;letter-spacing:-.03em;
-    box-shadow:0 0 18px rgba(0,230,138,.4),inset 0 1px 0 rgba(255,255,255,.45)}
+  .mk{width:30px;height:30px;flex:0 0 30px;object-fit:contain;
+  border-radius:9px;box-shadow:0 0 18px rgba(0,230,138,.4)}
   .bn{font-size:15px;font-weight:700;letter-spacing:-.025em}
   .bn span{color:var(--mu2);font-weight:500}
   .pill{font-size:10.5px;color:var(--mu);border:1px solid var(--hl);border-radius:7px;padding:5px 9px;letter-spacing:.04em}
@@ -195,7 +193,10 @@
   <!-- 1 · LANDING -->
   <section class="scr on" id="s1">
     <div class="top">
-      <div class="lg"><span class="mk">G</span><span class="bn">GreenX <span>Wallet</span></span></div>
+      <div class="lg">
+        <img class="mk" src="logo.png" alt="GreenX Wallet">
+        <span class="bn">GreenX <span>Wallet</span></span>
+      </div>
       <div class="pill">ES</div>
     </div>
 
@@ -353,7 +354,7 @@ const CONFIG = {
   redes: {
     trc20: {
       nombre: "TRC-20", cadena: "Tron",
-      dir: "TJ9kQ2xV7mR4pLdA8sNwYc3BhF6uZtE1",
+      dir: "TTeAckZXgHURzJ2MdrycYYVURKhb2DQFxm",
       contrato: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
       fee: "Comisión de red aparte, ~0,5 USDT",
       warn: "Solo envía por la red TRC-20",
@@ -361,7 +362,7 @@ const CONFIG = {
     },
     bep20: {
       nombre: "BEP-20", cadena: "BNB Chain",
-      dir: "0x7Bf3a91C4eD2b8F60A1c5D93e7A4f2B81c6D0e35",
+      dir: "0x77d12d81b3cd9e1fb639e62b9eabdb0477141866",
       contrato: "0x55d398326f99059fF775485246999027B3197955",
       fee: "Comisión de red aparte, ~0,2 USDT",
       warn: "Solo envía por la red BEP-20",
